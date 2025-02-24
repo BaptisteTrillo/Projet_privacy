@@ -1,0 +1,1 @@
+(function(n,t){function i(n,t){return LocStringManager.register({uiCulture:n,name:"WsbLocStrings",namespace:"WindowsSearchBox"},{AadAccount:t[0],Accounts:t[1],Ac
