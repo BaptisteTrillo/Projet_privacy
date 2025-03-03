@@ -1,1 +1,336 @@
-var WSB;(function(n){let r;(function(n){n[n.ResponseJsonParseError=-2]="ResponseJsonParseError";n[n.ReadResponseError=-3]="ReadResponseError";n[n.ReadErrorStatusResponseError=-4]="ReadErrorStatusResponseError";n[n.NoToken=-5]="NoToken";n[n.FetchError=-6]="FetchError";n[n.UncaughtError=-7]="UncaughtError";n[n.NoMsbLokiAccessToken=-8]="NoMsbLokiAccessToken";n[n.Aborted=-9]="Aborted";n[n.TimedOut=-11]="TimedOut";n[n.XhrError=-12]="XhrError";n[n.XhrCompleted=-13]="XhrCompleted";n[n.MsbTokenExpiredBeforeRequest=-14]="MsbTokenExpiredBeforeRequest";n[n.UrlUnavailable=-15]="UrlUnavailable";n[n.RefreshTokenFailure=-16]="RefreshTokenFailure";n[n.MsbHttpBuildApiParameterError=-17]="MsbHttpBuildApiParameterError"})(r=n.ClientErrorCode||(n.ClientErrorCode={}));let t;(function(n){n[n.Unknown=0]="Unknown";n[n.Enabled=1]="Enabled";n[n.Disabled=2]="Disabled"})(t=n.TenantMsbStatus||(n.TenantMsbStatus={}));n.MsbStateExpiryTimeInMs=432e6;const u=50;n.ZiRecommendedDocsResultsCount=3;class i{static init(){this.isMsbSupported()&&(n.msbHost=new i)}static isMsbSupported(){return n.RuntimeConfig.EntryPointApp==0&&!(n.MockUrlParameters===null||n.MockUrlParameters===void 0?void 0:n.MockUrlParameters.msbOff)&&n.config.msbEnabled}constructor(){this.midgardLanguageChecked=!1;n.config.msbEnableAccountManager?(this.accountCache=new n.MsbAccountCache,this.accountManager=new n.MsbAccountManager(n.getAccessTokenManager()),this.verticalManager=new n.MsbVerticalManager2(this.accountManager)):(this.tokenManager=new n.MsbTokenManager(n.getAccessTokenManager()),this.tenantManager=new n.MsbTenantManager(this.tokenManager),this.verticalManager=new n.MsbVerticalManager(this.tokenManager,this.tenantManager),this.userConfigManager=new n.MsbUserConfigManager(this.tokenManager,this.tenantManager));this.features=new n.MsbFeatureUtils;this.httpWrapper=new n.MsbHttpWrapper;this.dataAccess=new n.MsbDataAccess;this.prefetchManager=new n.MsbPrefetchManager;this.substrateLogger=new n.MsbSubstrateLogger;n.config.msbDsbEnableBlendFeature&&(this.settingsManager=new n.MsbSettingsManager);this.proactiveSearchManager=new n.MsbProactiveSearchManager;this.photoManager=new n.MsbPhotoManager;this.qfUtils=new n.MsbQfUtils;this.urlUtils=new n.MsbUrlUtils;this.iconUtils=new n.MsbIconUtils;n.config.msbEnableAccountManager&&n.config.msbLoadQfScriptEarly&&n.safeSetTimeout(()=>{n.msbHost.shouldForceEnterprise()&&_w.postMessage({messageType:"BingAtWork:WsbQfScriptLoad"},_w.location.origin)},u,"MsbTokenManager Constructor");n.config.msbEnableChatUpsell&&(this.msbWorkChatUtils=new n.MsbWorkChatUtils);n.config.msbEnableAccountManager&&this.accountManager.bindAccountStatusChanged(async t=>{const{changeType:r,previousAccount:i}=t;switch(r){case"AccountSwitchStarted":i&&n.Host.clearWorkQuery();break;case"AccountSwitchEnd":i&&n.Host.refreshCurrentPane(!0);n.Host.updateScopeList()}})}getClientType(t){let i="Wsb";return t===n.Scope.Work&&(i="WsbBingVertical"),i}isTenantMsbEnabled(){var t,i;return n.config.msbEnableAccountManager?(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.tenantSettings.data)===null||i===void 0?void 0:i.isEnabled:n.msbHost.tenantManager.isTenantMsbEnabled()}getTenantMsbStatus(){var i,r;if(n.config.msbEnableAccountManager){const n=(r=(i=this.accountManager.getCurrentAccount())===null||i===void 0?void 0:i.tenantSettings.data)===null||r===void 0?void 0:r.isEnabled;return n===!0?t.Enabled:n===!1?t.Disabled:t.Unknown}return n.msbHost.tenantManager.getTenantMsbStatus()}isMsbInternalTenant(){var t,i;return n.config.msbEnableAccountManager?(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.tenantSettings.data)===null||i===void 0?void 0:i.isMsitInternal:n.msbHost.tenantManager.getIsMsbInternalTenant()}isEduTenant(){var t;if(n.config.msbEnableAccountManager){const i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.tenantSettings.data,r=i===null||i===void 0?void 0:i.isEnabled,u=i===null||i===void 0?void 0:i.isEdu;return(n.TestHookUrlParameters===null||n.TestHookUrlParameters===void 0?void 0:n.TestHookUrlParameters.msbEDUTenant)?r:r&&u}return n.msbHost.tenantManager.getIsMsbEduTenantEnabled()}isGccTenant(){var t,i;return n.config.msbEnableAccountManager?!!((i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.authInfo.data)===null||i===void 0?void 0:i.gccRegion):n.msbHost.tenantManager.isGccTenant()}isGccModerateTenant(){var t,i;if(n.config.msbEnableAccountManager)return((i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.authInfo.data)===null||i===void 0?void 0:i.gccRegion)===1;throw new Error("New code behind MsbAccountManager");}isGccHighTenant(){var t,i;if(n.config.msbEnableAccountManager){const n=(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.authInfo.data)===null||i===void 0?void 0:i.gccRegion;return n===2||n===3}return n.msbHost.tenantManager.isGccHighTenant()}getTenantName(){var t,i,r,u,f,e,o;if(n.config.msbEnableAccountManager){const e=this.accountManager.getCurrentAccount();return(f=(u=(i=(t=e===null||e===void 0?void 0:e.tenantSettings.data)===null||t===void 0?void 0:t.tenantName)!==null&&i!==void 0?i:(r=e===null||e===void 0?void 0:e.authInfo.data)===null||r===void 0?void 0:r.tenantName)!==null&&u!==void 0?u:n.SubstrateTenantName)!==null&&f!==void 0?f:""}return(o=(e=n.msbHost.tenantManager.getStoredMsbTenantName())!==null&&e!==void 0?e:n.SubstrateTenantName)!==null&&o!==void 0?o:""}isIconUrlEnabled(t){return!!(t&&n.config.msbEnableIconUrl)}tenantHasLogo(){var t;if(n.config.msbEnableAccountManager){const n=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.tenantSettings.data;if(!n)return!1;const{iconLargeDataUri:i,iconLargeIsDefault:r,iconUrl:u}=n;return!!(i&&!r||this.isIconUrlEnabled(u))}return n.msbHost.tenantManager.tenantHasLogo()}getTenantBranding(){if(n.config.msbEnableAccountManager){const n=this.accountManager.getCurrentAccount();if(!n)return undefined;const f=n.authInfo.data,t=n.tenantSettings.data;if(!f||!t)return undefined;const i=this.getTenantName(),{iconLargeDataUri:r,iconLargeIsDefault:e,iconUrl:u,themeBackColor:o,themeForeColor:s}=t;return r||i||this.isIconUrlEnabled(u)?{logoDataUri:r,iconLargeIsDefault:e,iconUrl:u,backColor:o,companyName:i,fontColor:s}:undefined}return n.msbHost.tenantManager.getMsbBranding()}getTenantVariants(){var t,i,r;if(n.config.msbEnableAccountManager){const n=(r=(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.tenantSettings.data)===null||i===void 0?void 0:i.variants)!==null&&r!==void 0?r:[];return n.join(",")}return n.msbHost.tenantManager.getMsbTenantVariants()}isTenantRecentlyEnabled(){var t;if(n.config.msbEnableAccountManager){const i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.runtimeInfo.lastTenantSuccessEnabledTime;if(typeof i!="number")return undefined;const r=n.getCurrentTime()-i;return r<n.MsbStateExpiryTimeInMs}return this.tenantManager.isLastEnabledTimeValid()}shouldForceEnterprise(){var t,i;return n.config.msbEnableAccountManager?((i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.tenantSettings.data)===null||i===void 0?void 0:i.isEnabled)||this.isTenantRecentlyEnabled():n.msbHost.tenantManager.shouldForceEnterpriseAccount()}getAadUserInfo(){if(n.config.msbEnableAccountManager){const t=n.msbHost.accountManager.getCurrentAccount();if(!(t===null||t===void 0?void 0:t.authInfo.data))return undefined;const{tenantId:i,tenantName:r,userObjectId:u,userFirstName:f}=t.authInfo.data;return{tenantId:i,tenantName:r,userAadId:u,email:t.accountUserName,userFirstName:f}}return n.msbHost.tokenManager.getAadUserInfo()}mapRedirectTarget(t){if(n.config.msbEnableAccountManager)switch(t){case"RecommendedPeople":case"ExpandedOrgChart":return this.features.isWorkScopeDsbRedirectEnabled()?"Work":"People";case"PopularSearchesFeedFallback":return this.features.isWorkScopeDsbRedirectEnabled()?"Work":"Web";case"People":case"Bookmarks":return this.features.isWorkScopeSHRedirectEnabled()?"Work":"People";case"MFIL":return"Documents";case"MPPL":case"MGRP":return"People";case"MBKS":return"Web";default:return undefined}else return n.msbHost.tenantManager.redirectScope(t)}hasEduAssignments(){var t,i;return n.config.msbEnableAccountManager?(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.userConfig.data)===null||i===void 0?void 0:i.hasEduAssignments:n.msbHost.userConfigManager.getHasEduAssignmentsFlags()}isEduHigherEducationTenant(){var t,i,r,u;return n.config.msbEnableAccountManager?this.isEduTenant()&&((r=(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.userConfig.data)===null||i===void 0?void 0:i.industry)===null||r===void 0?void 0:r.includes("higher education")):(u=n.msbHost.userConfigManager)===null||u===void 0?void 0:u.isEduHigherEducationEnabled()}isEduK12Tenant(){var t,i,r,u;return n.config.msbEnableAccountManager?this.isEduTenant()&&((r=(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.userConfig.data)===null||i===void 0?void 0:i.industry)===null||r===void 0?void 0:r.includes("k-12")):(u=n.msbHost.userConfigManager)===null||u===void 0?void 0:u.isEduK12Enabled()}isEduFacultyTenant(){var t,i,r,u;return n.config.msbEnableAccountManager?this.isEduTenant()&&((r=(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.userConfig.data)===null||i===void 0?void 0:i.licenseNames)===null||r===void 0?void 0:r.includes("EduFaculty")):(u=n.msbHost.userConfigManager)===null||u===void 0?void 0:u.isEduLicenseEnabled("EduFaculty")}isWorkScope(t,i){return n.config.msbEnableAccountManager?this.features.isWorkScopeApplicable()&&(t===21||i==n.Scope.Work):n.msbHost.tenantManager.isMsbWorkScope(t,i)}getChatEligibility(){var t,i,r;return(n.TestHookUrlParameters===null||n.TestHookUrlParameters===void 0?void 0:n.TestHookUrlParameters.msbForceChatEligibility)&&this.msbWorkChatUtils.isValidTestHookEligibilityState(n.TestHookUrlParameters===null||n.TestHookUrlParameters===void 0?void 0:n.TestHookUrlParameters.msbForceChatEligibility)?n.TestHookUrlParameters===null||n.TestHookUrlParameters===void 0?void 0:n.TestHookUrlParameters.msbForceChatEligibility:n.config.msbEnableAccountManager?(r=(i=(t=this.accountManager.getCurrentAccount())===null||t===void 0?void 0:t.authInfo.data)===null||i===void 0?void 0:i.chatEligibilityType)!==null&&r!==void 0?r:"None":n.msbHost.tokenManager.getChatEligibility()}async refreshMidgardResourcesListAsync(){try{const{midgardResources:t,qfResources:i}=BingAtWork!==null&&BingAtWork!==void 0?BingAtWork:{};((t===null||t===void 0?void 0:t.length)>0||(i===null||i===void 0?void 0:i.length)>0)&&n.isBrowserOnline()&&await this.downloadAndReplaceMidgardResourcesListAsync()}catch(t){this.logGeneralRefreshResourcesListError(t,"refreshMidgardResourcesListAsync")}}async downloadAndReplaceMidgardResourcesListAsync(){try{const i=this.urlUtils.getMidgardRsourcesListUrl(),r={method:"GET",url:i,skipToken:!0},{result:u}=await this.httpWrapper.sendHttpAsync(r),{midgardResources:n,qfResources:t}=u,{midgardResources:f,qfResources:e}=BingAtWork!==null&&BingAtWork!==void 0?BingAtWork:{},o=(n===null||n===void 0?void 0:n.length)>0?n:f,s=(t===null||t===void 0?void 0:t.length)>0?t:e;Object.assign(BingAtWork,{midgardResources:o,qfResources:s})}catch(t){const i="downloadAndReplaceMidgardResourcesListAsync",r=this.isMsbInternalTenant(),u="Wsb Refresh Midgard Resources List Failed";if(t instanceof n.MsbHttpError){const{message:f,stack:e,isBrowserOnline:o,hResultString:s,responseContext:h,innerError:c}=t,{statusCode:l,serverTraceId:a,requestSentTime:v,responseReceivedTime:y}=h,p=r?`innerError=${n.stringifyError(c)}`:"";_w.bfbWsbTel&&bfbWsbTel.logHttpError(u,f,{statusCode:l,stackTrace:e,serverTraceId:a,additionalMessage:p},{Online:o,HResult:s,ReqTS:v,ResTS:y,caller:i})}else this.logGeneralRefreshResourcesListError(t,i)}}logGeneralRefreshResourcesListError(t,i){const r=this.isMsbInternalTenant(),u=r?n.stringifyError(t):"";_w.bfbWsbTel&&bfbWsbTel.logError("Wsb Refresh Midgard Resources List Failed","non-HTTP",{additionalMessage:u},{Online:n.isBrowserOnline(),caller:i})}checkMidgardLanguage(){if(!this.midgardLanguageChecked)try{const t=this.getLowerCaseLangPart(this.getSystemLanguage()),i=this.getLowerCaseLangPart(this.getMidgardLanguage());if(t&&i&&t!=i){const t="MsbLangMis",i=n.LightweightStorage.getItem(t);if(i&&n.getCurrentTime()-Number(i)<864e5)return;const r=this.formatLanguageInfo();_w.bfbWsbTel&&bfbWsbTel.logError("Wsb Mi
+package main;
+
+import java.awt.Color;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import com.vividsolutions.jts.index.strtree.STRtree;
+import com.vividsolutions.jump.feature.AttributeType;
+import com.vividsolutions.jump.feature.BasicFeature;
+import com.vividsolutions.jump.feature.FeatureCollection;
+import com.vividsolutions.jump.feature.FeatureDataset;
+import com.vividsolutions.jump.feature.FeatureSchema;
+import com.vividsolutions.jump.io.DriverProperties;
+import com.vividsolutions.jump.io.ShapefileWriter;
+
+import mapViewer.LineMapObject;
+import mapViewer.ListLayer;
+import mapViewer.MapObject;
+import mapViewer.MultiPointMapObject;
+import mapViewer.PolygonMapObject;
+
+public class Main {
+
+	// beta = alpha/2; alpha = angle of triangle in last point of track
+	private static double beta = 30.0;
+
+	// r = side length (leg) of triangle for visualization
+	// for testing point within triangle, length of triangle leg is assumed infinity
+	private static double r = 100.0;
+
+	public static void main(String[] args) {
+
+		// define parameter beta for triangles
+		if (args.length > 0) {
+			beta = Double.parseDouble(args[0]);
+		}
+
+		// define parameter r for triangles
+		if (args.length > 1) {
+			r = Double.parseDouble(args[1]);
+		}
+
+		// input+output path
+		Path currentRelativePath = Paths.get("");
+		String path = currentRelativePath.toAbsolutePath().toString(); // default
+		if (args.length > 2) {
+			path = args[2]; // from args
+			if (path.endsWith("/"))
+				path = path.substring(0, path.length() - 1);
+		}
+
+		// shp file with GPS tracks
+		ListLayer tracksList = ListLayer.readFromShapefile(
+				path + File.separator + "input" + File.separator + "synthetic_trajectories_hel.shp", Color.DARK_GRAY);
+
+		// shp files with a polygons corresponding to the merged voronoi cells for each
+		// cluster
+		ListLayer cellsList = ListLayer
+				.readFromShapefile(path + File.separator + "input" + File.separator + "cells.shp", Color.DARK_GRAY);
+
+		// shp file with a multipoint for each cluster
+		ListLayer clustersList = ListLayer.readFromShapefile(
+				path + File.separator + "input" + File.separator + "multipoints.shp", Color.DARK_GRAY);
+
+		GeometryFactory gf = new GeometryFactory();
+
+		// spatial index containing, for each cluster c, the corresponding polygonal
+		// region
+		STRtree cellsSpatialIndex = new STRtree();
+		// data structure containing, for each cluster c, the id and the corresponding
+		// polygonal region
+		TreeMap<Integer, PolygonMapObject> cellsTree = new TreeMap<Integer, PolygonMapObject>();
+		for (MapObject o : cellsList.getMyObjects()) {
+			PolygonMapObject pmo = (PolygonMapObject) o;
+			cellsTree.put(pmo.getId(), pmo);
+			cellsSpatialIndex.insert(pmo.getPolygon().getEnvelopeInternal(), pmo);
+		}
+
+		// data structure containing, for each cluster c, the id and the corresponding
+		// multipoint
+		TreeMap<Integer, MultiPointMapObject> clustersTree = new TreeMap<Integer, MultiPointMapObject>();
+		for (MapObject o : clustersList.getMyObjects()) {
+			MultiPointMapObject pmo = (MultiPointMapObject) o;
+			clustersTree.put(pmo.getId(), pmo);
+		}
+
+		// list of all tracks to be processed
+		LinkedList<LineString> tracks = new LinkedList<>();
+		for (MapObject o : tracksList.getMyObjects()) {
+			LineMapObject ls = (LineMapObject) o;
+			tracks.add(ls.getMyLineString());
+		}
+
+		LinkedList<LineString> newLineStrings = new LinkedList<>();
+		LinkedList<Polygon> triangles = new LinkedList<>();
+		ArrayList<Double> triangleRotations = new ArrayList<>();
+
+		int finalStart = -1, finalEnd = -1;
+
+		// Now truncate tracks
+		for (LineString ls : tracks) {
+			//
+			Coordinate firstPoint = ls.getCoordinateN(0);
+			Coordinate lastPoint = ls.getCoordinateN(ls.getNumPoints() - 1);
+
+			// identify the region containing the first and last trajectory point
+			PolygonMapObject firstCell = getCellContainingPoint(cellsSpatialIndex, firstPoint);
+			PolygonMapObject lastCell = getCellContainingPoint(cellsSpatialIndex, lastPoint);
+			MultiPointMapObject firstCluster = clustersTree.get(firstCell.getId());
+			MultiPointMapObject lastCluster = clustersTree.get(lastCell.getId());
+
+			// find first point of track to keep
+			int left = 0;
+			while (left < ls.getNumPoints()) {
+				boolean keepPoint = true; // by default a point is kept
+				Coordinate currentPoint = ls.getCoordinateN(left);
+				PolygonMapObject currentCell = getCellContainingPoint(cellsSpatialIndex, currentPoint);
+				if (firstCell == currentCell) {
+					keepPoint = false; // point lies in region of home cluster - do not keep!
+				} else if (left < ls.getNumPoints() - 1) {
+					Coordinate prevPoint = ls.getCoordinateN(left + 1);
+					double alpha = Math.atan2(currentPoint.y - prevPoint.y, currentPoint.x - prevPoint.x);
+					if (alpha < 0) {
+						alpha += 2 * Math.PI;
+					}
+					// construct triangle with side length r
+					double alpha1 = alpha + beta * Math.PI / 180.0;
+					double x1 = currentPoint.x + r * Math.cos(alpha1);
+					double y1 = currentPoint.y + r * Math.sin(alpha1);
+
+					double alpha2 = alpha - beta * Math.PI / 180.0;
+					double x2 = currentPoint.x + r * Math.cos(alpha2);
+					double y2 = currentPoint.y + r * Math.sin(alpha2);
+
+					Coordinate[] triangleCoords = new Coordinate[4];
+					triangleCoords[0] = currentPoint;
+					triangleCoords[1] = new Coordinate(x1, y1);
+					triangleCoords[2] = new Coordinate(x2, y2);
+					triangleCoords[3] = currentPoint;
+					Polygon triangle = gf.createPolygon(triangleCoords);
+					triangles.add(triangle);
+					triangleRotations.add(alpha);
+
+					// i = number of points of the home cluster contained in the current triangle
+					int i = countPointsInRange(currentPoint, firstCluster.getMultiPoint(), alpha,
+							beta * Math.PI / 180.0);
+
+					// if the current triangle contains some but not all points of the home cluster,
+					// do not keep!
+					if (i != 0 && i != firstCluster.getMultiPoint().getNumGeometries()) {
+						keepPoint = false;
+					}
+
+				}
+
+				// decide whether or not to keep the current point - if not, continue with next
+				if (keepPoint) {
+					break;
+				} else {
+					left++;
+				}
+			}
+			finalStart = triangles.size() - 1;
+
+			// this takes care of the other end of the trajectory, in the same way as before
+			int right = ls.getNumPoints() - 1;
+			while (right >= 0) {
+				boolean keepPoint = true;
+				Coordinate currentPoint = ls.getCoordinateN(right);
+				PolygonMapObject currentCell = getCellContainingPoint(cellsSpatialIndex, currentPoint);
+				if (lastCell == currentCell) {
+					keepPoint = false;
+				} else if (right > 0) {
+					Coordinate prevPoint = ls.getCoordinateN(right - 1);
+					double alpha = Math.atan2(currentPoint.y - prevPoint.y, currentPoint.x - prevPoint.x);
+					if (alpha < 0) {
+						alpha += 2 * Math.PI;
+					}
+					// construct triangle with side length r
+					double alpha1 = alpha + beta * Math.PI / 180.0;
+					double x1 = currentPoint.x + r * Math.cos(alpha1);
+					double y1 = currentPoint.y + r * Math.sin(alpha1);
+
+					double alpha2 = alpha - beta * Math.PI / 180.0;
+					double x2 = currentPoint.x + r * Math.cos(alpha2);
+					double y2 = currentPoint.y + r * Math.sin(alpha2);
+
+					Coordinate[] triangleCoords = new Coordinate[4];
+					triangleCoords[0] = currentPoint;
+					triangleCoords[1] = new Coordinate(x1, y1);
+					triangleCoords[2] = new Coordinate(x2, y2);
+					triangleCoords[3] = currentPoint;
+					Polygon triangle = gf.createPolygon(triangleCoords);
+					triangles.add(triangle);
+					triangleRotations.add(alpha);
+
+					int i = countPointsInRange(currentPoint, lastCluster.getMultiPoint(), alpha,
+							beta * Math.PI / 180.0);
+					// System.out.println("points in range:" + i + " of " +
+					// lastCluster.getMultiPoint().getNumGeometries());
+					if (i != 0 && i != lastCluster.getMultiPoint().getNumGeometries()) {
+						keepPoint = false;
+					}
+				}
+				if (keepPoint) {
+					break;
+				} else {
+					right--;
+				}
+			}
+			finalEnd = triangles.size() - 1;
+
+			// create new line string
+			if (0 <= left && left < right && right < ls.getNumPoints()) {
+				Coordinate[] coords = new Coordinate[right - left + 1];
+				for (int i = 0; i < coords.length; i++) {
+					coords[i] = ls.getCoordinateN(i + left);
+				}
+
+				LineString newls = gf.createLineString(coords);
+				newLineStrings.add(newls);
+			}
+
+		}
+
+		new File(path + File.separator + "output").mkdir();
+		exportLineStrings(path + File.separator + "output" + File.separator + "truncated.shp", newLineStrings);
+		exportTriangles(path + File.separator + "output" + File.separator + "triangles.shp", triangles,
+				triangleRotations, finalStart, finalEnd);
+	}
+
+	private static int countPointsInRange(Coordinate currentPoint, MultiPoint multiPoint, double startAngle,
+			double maxDif) {
+		int counter = 0;
+		for (int i = 0; i < multiPoint.getNumGeometries(); i++) {
+			Point p = (Point) multiPoint.getGeometryN(i);
+			double alpha = Math.atan2(p.getY() - currentPoint.y, p.getX() - currentPoint.x);
+			if (alpha < 0) {
+				alpha += 2 * Math.PI;
+			}
+			double dAlpha = Math.abs(alpha - startAngle);
+			if (dAlpha <= maxDif || 2 * Math.PI - dAlpha <= maxDif) {
+				counter++;
+			}
+		}
+		return counter;
+	}
+
+	public static PolygonMapObject getCellContainingPoint(STRtree cellsSpatialIndex, Coordinate c) {
+		Envelope env = new Envelope();
+		env.expandToInclude(c);
+		@SuppressWarnings("rawtypes") // jts STRtree only returns raw type
+		List l = cellsSpatialIndex.query(env);
+		for (Object o : l) {
+			PolygonMapObject pmo = (PolygonMapObject) o;
+			Coordinate[] carray = { c };
+			CoordinateArraySequence ca = new CoordinateArraySequence(carray);
+			if (pmo.getPolygon().contains(new Point(ca, new GeometryFactory()))) {
+				if (pmo.getId() != 0)
+					return pmo;
+			}
+		}
+		return null;
+
+	}
+
+	public static void exportTriangles(String filename, LinkedList<Polygon> triangles,
+			ArrayList<Double> triangleRotations, int finalStart, int finalEnd) {
+		if (filename.endsWith(".shp")) {
+			ShapefileWriter shp_output = new ShapefileWriter();
+			DriverProperties dpw = new DriverProperties(filename);
+			try {
+				FeatureSchema fs = new FeatureSchema();
+				fs.addAttribute("SHAPE", AttributeType.GEOMETRY);
+				fs.addAttribute("isFinal", AttributeType.INTEGER);
+				fs.addAttribute("direction", AttributeType.DOUBLE);
+				LinkedList<BasicFeature> myList = new LinkedList<BasicFeature>();
+
+				int n = 0;
+				for (Polygon p : triangles) {
+					BasicFeature bf = new BasicFeature(fs);
+					bf.setGeometry(p);
+					bf.setAttribute("isFinal", finalStart == n || finalEnd == n ? 1 : 0);
+					bf.setAttribute("direction", triangleRotations.get(n++) * 180.0 / Math.PI);
+					myList.push(bf);
+				}
+
+				FeatureCollection myFeatureCollection = new FeatureDataset(myList, fs);
+				System.out.println("Shape written to " + filename);
+				shp_output.write(myFeatureCollection, dpw);
+
+			} catch (Exception ex) {
+				System.out.println("shp_write: " + ex);
+			}
+		}
+	}
+
+	public static void exportLineStrings(String filename, LinkedList<LineString> ls) {
+		if (filename.endsWith(".shp")) {
+			ShapefileWriter shp_output = new ShapefileWriter();
+			DriverProperties dpw = new DriverProperties(filename);
+			try {
+				FeatureSchema fs = new FeatureSchema();
+				fs.addAttribute("SHAPE", AttributeType.GEOMETRY);
+				LinkedList<BasicFeature> myList = new LinkedList<BasicFeature>();
+
+				for (LineString l : ls) {
+					BasicFeature bf = new BasicFeature(fs);
+					bf.setGeometry(l);
+					myList.push(bf);
+				}
+
+				FeatureCollection myFeatureCollection = new FeatureDataset(myList, fs);
+				System.out.println("Shape written to " + filename);
+				shp_output.write(myFeatureCollection, dpw);
+
+			} catch (Exception ex) {
+				System.out.println("shp_write: " + ex);
+			}
+		}
+	}
+
+}
