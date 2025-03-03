@@ -1,1 +1,336 @@
-var WSB;(function(n){const t="pp_",i=100,r=200;class u{constructor(t,i){this._page=t;this._sections=[];this._selectedItemIndex=-1;this._itemClickEventHandler=(t,i)=>{let r=document.getSelection();r.toString()&&r.focusNode==i.target||t.click(n.getCurrentTime(),n.getInputType(i))};this._contextMenuHandler=(t,r,u)=>{(r===null||r===void 0?void 0:r.shiftKey)&&this.blur(),r&&(r.pageX||r.pageY)?n.safeExecute(()=>i.showContextMenuOnXY(t,r.pageX,r.pageY,()=>this.focus(!1),n.getInputType(r),u),"contextMenuHandler"):n.safeExecute(()=>i.showContextMenuOnElement(t,u?_ge(u.id):_ge(t.id),()=>this.focus(!1),r?n.getInputType(r):0,u),"contextMenuHandler")};n.Host.bindSearchBoxGotFocus(()=>{this.blur()});n.Host.bindDismissed(()=>this.blur());n.Host.bindKeyDown(t=>{var i;this.hasFocus()&&(t==36||t==35)&&this.selectFirstOrLastItem(t==36);((i=this._selectedItem)===null||i===void 0?void 0:i.id)==n.PreviewMetadataContainerId&&t==13&&_ge(this._selectedItem.id).click()})}init(t){this._previewPaneViewModelParent=t;this._suggestionClickEventHandler=(t,i)=>{let r=n.getCurrentTime(),u=n.getInputType(i);this._previewPaneViewModelParent.onBeforeItemLaunch(r,u,4,null);t.click(r,u);this._previewPaneViewModelParent.onAfterItemLaunch(4)}}finalizeKeystroke(){this.instrumentOnPreviewPaneRendered(!1,!0)}instrumentOnPreviewPaneRendered(n,t){if(this._timestampFirstRender&&this._onPreviewPaneRendered){let i={firstRenderTS:this._timestampFirstRender,layout:this.getLayoutDataForPPRenderedInstrumentation()};this._onPreviewPaneRendered(t,!n,i)}}update(t,i,r,u,f,e,o){this._currentCallValid&&(this._currentCallValid.valid=!1);f&&(o||(this.instrumentOnPreviewPaneRendered(!1,!0),this._timestampFirstRender=null,this._settingsOnlineModules=[],this._settingsOnlineModulesRetrieved=!1),this._onPreviewPaneRendered=f);this._previewPaneId=u;this._previewedSuggestion=t;this._sections=[];this._hasPreviewIconBeenSet=!1;this._hasPrefixIconBeenSet=!1;this._haveActionsBeenFetched=!1;this._sectionRetrieved_jumplist=!1;this._sectionRetrieved_settingsFaq=!1;this._sectionRetrieved_settingsRelatedSettings=!1;this._allSectionsRetrieved=()=>this._sectionRetrieved_jumplist&&this._sectionRetrieved_settingsFaq&&this._sectionRetrieved_settingsRelatedSettings;let c=o&&this.hasFocus();const s=t=>{this._previewPaneViewModelParent.onResponseReceived(n.getCurrentTime());t?this.delayedRender():this.render();(this._previewPaneViewModelParent.focusPending||c)&&(this._previewPaneViewModelParent.focusPending=!1,this.focus(!1))};let h={valid:!0};this._currentCallValid=h;t&&this.updateSelection(t,i,()=>h.valid,()=>s(!1),()=>s(!0))}setPreviewIcon(t,i,u,f,e){let o=(n.TestHookUrlParameters===null||n.TestHookUrlParameters===void 0?void 0:n.TestHookUrlParameters.isTest)&&(n.TestHookUrlParameters===null||n.TestHookUrlParameters===void 0?void 0:n.TestHookUrlParameters.DisablePreviewGetIcon);if(!o){let r=4;n.config.newFilesPreviewPane&&(n.isDocument(t.type)||n.isPhoto("LI"))&&t.handoffType==2&&(r=9);n.config.anticipateGetVerbsAsync?(t.getIcon(r,i=>{this._hasPreviewIconBeenSet=!0,t.previewIcon=i,(i===null||i===void 0?void 0:i.thumbnailType)==0&&(t.iconIsThumbnail=!0),n.populateImageRatio(t.previewIcon,t.type,()=>{},t.handoffType)}),this.getActions(i,f,e,u)):(t.getIcon(r,r=>{this._hasPreviewIconBeenSet=!0,t.previewIcon=r,(r===null||r===void 0?void 0:r.thumbnailType)==0&&(t.iconIsThumbnail=!0),n.populateImageRatio(t.previewIcon,t.type,()=>this.getActions(i,f,e,u),t.handoffType)}),n.config.newFilesPreviewPane&&t.getIcon(3,r=>{this._hasPrefixIconBeenSet=!0,t.prefixIcon=r,n.populateImageRatio(t.prefixIcon,t.type,()=>this.getActions(i,f,e,u))},!0))}!o&&(n.MockUrlParameters===null||n.MockUrlParameters===void 0?void 0:n.MockUrlParameters.isTest)||n.safeSetTimeout(()=>{this._hasPreviewIconBeenSet&&(this._hasPrefixIconBeenSet||!n.config.newFilesPreviewPane)||(this._hasPreviewIconBeenSet=!0,this._hasPrefixIconBeenSet=!0,t.previewIcon=n.ScopeConfig[n.getScope(n.getGroupType(t))].icon,n.populateImageRatio(t.previewIcon,t.type,()=>this.getActions(i,f,e,u)))},r,"setPreviewIcon")}updateSelection(t,i,r,u,f){t.getIcon?this.setPreviewIcon(t,i,r,u,f):(t.icon&&(t.previewIcon={content:t.icon.content,type:t.icon.type,bgColor:t.icon.bgColor,needsAccentColor:!0,ratio:t.icon.ratio,className:t.icon.className}),n.config.enableWinStoreAppDataProvider&&(t===null||t===void 0?void 0:t.storeAppCallback)?this.getStoreAppData(t,u,r):this.getActions(i,u,f,r))}hasFocus(){return!!this._selectedItem}focus(t){let i=this.getSelectableItems();if(i.length>0){let r=t?0:this._selectedItemIndex!=-1?this._selectedItemIndex:0,u=i[r];this.select(u,!1);n.Host.searchBoxHasFocus()&&n.Host.setFocusInWebView("localPP focus")}else this._previewPaneViewModelParent.focusPending=!0}readyToBlur(){return!0}blur(){this._selectedItem&&(this._selectedItem.selected=!1,this._selectedItem=null,this.render())}clear(){this._selectedItem=null;this._selectedItemIndex=-1;this._previewedSuggestion=null;this._onPreviewPaneRendered=null;this._sections=[];this._settingsOnlineModules=[];this._settingsOnlineModulesRetrieved=!1;sb_ct(this._renderTimer);this._hasPreviewIconBeenSet=!1;this._renderTimer=null;this.render()}getSelectableItems(){return[].concat(...this.getSelectableItemsByGroup())}getSelectableItemsByGroup(){var i;let t=[];if(n.isStore((i=this._previewedSuggestion)===null||i===void 0?void 0:i.type))n.PreviewAppStore&&Object.values(n.PreviewAppStore).forEach(n=>{document.getElementById(n.id)&&t.push([n])});else{document.getElementById(n.PreviewMetadataContainerId)&&t.push([n.PreviewMetadataContainer]);for(let n of this._sections){let i=[];i=i.concat(n.items);let r=n.collapsedItems.length>0;if(r){let t=_ge(n.collapsedItems[0].id).classList;t.contains("collapsedItem")||(i=i.concat(n.collapsedItems))}t.push(i);r&&t.push([n.expander])}for(let n of this._settingsOnlineModules)t.push(n.settingLinks)}return t}getSelectedItem(){return this._selectedItem}select(t,i){if(i){SharedLogHelper.LogError("selectPreviewPaneItem",null,new Error("Can't update search box value when selecting preview pane item"));return}if((this._selectedItem!=t||!this._selectedItem.selected)&&(this._selectedItem&&(this._selectedItem.selected=!1),t)){let i=this.getSelectableItems().findIndex(n=>n==t);if(i<0)SharedLogHelper.LogError("LocalPreviewPane.Select",null,new Error("select called on unknown item"));else{t.selected=!0;this._selectedItem=t;this._selectedItemIndex=i;this.render();let r=_ge(t.id);r&&(r.focus(),this._page.scrollToElement(r,n.StaticHtmlElements.qfPreviewScrollArea,n.StaticHtmlElements.qfPreviewScrollArea.offsetHeight))}}}onAfterKeyDown(t,i){return n.isContextMenuKey(t,i.shiftKey)?(this._contextMenuHandler(this._previewedSuggestion,null,this._selectedItem),!0):!1}selectFirstOrLastItem(n){let t=this.getSelectableItems();if(t.length!=0){let i=n?0:t.length-1;this.select(t[i],!1)}}isAnaheimDataSuggestionType(t){return t.type=="ANAH"||t.type=="ANAR"||t.type=="ANAT"||t.type=="ANAF"||t.type=="ANATH"&&n.config.topHitMuse}isAnaheimDataSuggestion(t){let i=n.getGroupType(t);return this.isAnaheimDataSuggestionType(t)&&(i==n.GroupType.SearchSuggestions||i==n.GroupType.AnaheimDataTopHit&&n.config.topHitMuse)}getAnaheimDataPreviewedSuggestion(n){let t;if(this.isAnaheimDataSuggestion(n)){t=Object.assign({},n);let i="https://"+HitHighlightingParser.removeMarkers(t.primaryMetadata),r=new URL(i);t.primaryMetadata=r.hostname}return t}getDataModel(){var t;if(this._previewedSuggestion){let i=this.getAnaheimDataPreviewedSuggestion(this._previewedSuggestion),r=this._previewedSuggestion.uninstallationInProgress?{messageText:n.Host.getLocString("UninstallationInProgress",HitHighlightingParser.removeMarkers(this._previewedSuggestion.text)),icon:{content:"&#xE946",type:2},messageClassName:"uninstallMessage"}:null,u=n.config.enableWinStoreAppDataProvider&&((t=this._previewedSuggestion)===null||t===void 0?void 0:t.previewPaneStatus)==0?!0:null;return{suggestion:i?i:this._previewedSuggestion,sections:n.deepCopy(this._sections),suggestionClickHandler:this._suggestionClickEventHandler,itemClickHandler:this._itemClickEventHandler,contextMenuClickHandler:this._contextMenuHandler,settingsOnlineModules:n.deepCopy(this._settingsOnlineModules),messageDataModel:r,previewLocation:n.deepCopy(n.PreviewMetadataContainer),appStore:n.deepCopy(n.PreviewAppStore),isLoadingPage:u,modelBasedDisclaimerMessage:this.getDisclaimerMessageModel()}}return null}getDisclaimerMessageModel(){const t=n.config.disclaimerFeedbackUri,i=n.Host.getLocString("FeedbackUriText"),r=n.Host.getLocString("ModelDisclaimer"),u=()=>{n.Host.launchUriAsync(t),n.InstrumentationHelper.logClientInstEvent("Click","ModelBasedSearchFeedbackClick",undefined)};return{feedbackClickHandler:u,feedbackText:i,message:r}}render(){this._page.updatePreviewContainerView(this.getDataModel());this._previewedSuggestion&&(this._timestampFirstRender||(this._timestampFirstRender=n.getCurrentTime()),this.instrumentIfAllSectionsRetrieved())}instrumentIfAllSectionsRetrieved(){this._previewedSuggestion&&this._allSectionsRetrieved()&&this.instrumentOnPreviewPaneRendered(!0,!1)}delayedRender(){this._renderTimer||(this._renderTimer=n.safeSetTimeout(()=>{this.render(),this._renderTimer=null},i,"delayedRender"))}getStoreAppData(n,t,i){i()&&(this.render(),n.storeAppCallback(n).then(n=>{i()&&(this._previewedSuggestion=n,this._sectionRetrieved_jumplist=!0,this._sectionRetrieved_settingsFaq=!0,this._sectionRetrieved_settingsRelatedSettings=!0,t())}))}getActions(t,i,r,u){if(u()){let f=this._previewedSuggestion;if(!f||this._haveActionsBeenFetched){i();return}this._haveActionsBeenFetched=!0;this.addToSection(this.createSyntheticAction(f),null,n.Host.getLocString("ActionsSection"));n.config.settingsOnlineModuleEnabled&&n.isSetting(f.type)&&f.deviceItem&&!this._settingsOnlineModulesRetrieved?n.fetchUrlJson(this.getRelatedSearchUrl(f.deviceItem.id,n.uiLanguageCache),null,null,n=>this.createSettingOnlineModules(n,u)):(this._sectionRetrieved_settingsFaq=!0,this._sectionRetrieved_settingsRelatedSettings=!0);n.getVerbsAsync("PreviewPaneExtraActions",f,n.config.rawVerbs,!0,n=>this.processVerbs(n,t,i,r,u),u)}}processVerbs(t,i,r,u,f){if(f()){const c=n.Host.getLocString("ActionsSection");let h=this._previewedSuggestion;t=n.extendVerbs(t,h,this._page,()=>this.render());let o=-1,e=-1,s=0;for(let n of t)n.verb==="copy"&&(o=s),n.verb==="S_CopyFullPath"&&(e=s),s++;if(o!=-1&&e!=-1){let n=t[e];o<e?(t.splice(e,1),t.splice(o+1,0,n)):(t.splice(o+1,0,n),t.splice(e,1))}for(let n of t)if(n.verb){let t=this.createAction(n);n.getIcon&&n.getIcon(1,n=>{t.icon=n,u()});this.addToSection(t,null,c)}this.processChildSuggestions(h,i,()=>{f()&&u()});this._sectionRetrieved_jumplist=!0;r()}}createSyntheticAction(t){let i="";var r=n.AccessTokenManager===null||n.AccessTokenManager===void 0?void 0:n.AccessTokenManager.getWindowsAccountType();i=t.type=="PPL"&&r!=2?n.Host.getLocString("OpenContact"):t.previewPaneType==1||this.isAnaheimDataSuggestion(t)?n.Host.getLocString("OpenInBrowser"):n.Host.getLocString("Open");let u={verb:n.JumplistActionItemType[n.JumplistActionItemType.S_Open],displayName:i,icon:{type:2,content:"&#xE8A7"},executeSync:()=>t.click(n.getCurrentTime(),0)};return this.createAction(u,n.GroupType.JumpListSynthetic)}createAction(i,r){let u=n.JumplistActionItemType[i.verb],f={ppId:this._previewPaneId,st:r||n.GroupType.JumpListActions,vbt:u||undefined,vbr:u?undefined:i.verb};return{id:t+i.verb,text:i.displayName,click:(t,r)=>{const u=5;this._previewPaneViewModelParent.onBeforeItemLaunch(t,r,u,f);if(i.executeSync){n.safeExecute(()=>i.executeSync(),"verb.executeSync",null,i.verb);this._previewPaneViewModelParent.onAfterItemLaunch(u)}else n.Async.safeChain("verb.executeAsync",()=>i.executeAsync(),()=>this._previewPaneViewModelParent.onAfterItemLaunch(u),null,null,i.verb)},icon:i.icon,selected:!1,narratorText:i.displayName,instData:f}}processChildSuggestions(i,r,u){if(i&&(i.previewPaneType!=1||n.RuntimeConfig.MiniSERPMode!=0)){if(i.calculateChildSuggestions&&i.calculateChildSuggestions(),i.childSuggestions){let f=1;for(let e=0;e<i.childSuggestions.length;e++){let o=i.childSuggestions[e],h=o.groupType==n.GroupType.JumpListTasks,c={ppId:this._previewPaneId,st:o.groupType},s={id:t+i.id+"_"+e,text:HitHighlightingParser.removeMarkers(o.text),click:(n,t)=>{let i=h?5:6;this._previewPaneViewModelParent.onBeforeItemLaunch(n,t,i,c);o.click(n,t);this._previewPaneViewModelParent.onAfterItemLaunch(i)},icon:o.icon,selected:!1,narratorText:o.narratorText,annotationClass:"annotation",isJumpListTaskItem:!!h,instData:c},l,a;if(!h){let t=n.getGroupTitleAndNarratorText(r,o.groupType,o,null);s.tooltip=o.tooltip;l=t.title;a=t.narratorText;s.annotation=o.additionalInfoText}o.getIcon&&o.getIcon(1,t=>{s.icon=t,n.populateImageRatio(s.icon,o.type,()=>u())});this.addToSection(s,l,a,h?f++:null)}}n.config.itemsBeforeExpander&&this.processItemsForExpander()}}addToSection(n,t,i,r){let u=this._sections.find(n=>(n.title||"")==(t||""));u?typeof r=="number"?u.items.splice(r,0,n):u.items.push(n):(u={title:t,narratorText:i,items:[n],collapsedItems:[],expander:null},this._sections.push(u))}processItemsForExpander(){if(this._sections.length!=0){let i=(n,t,i)=>{n.pi=t,i&&(n.c=1)},t=this._sections.length,r=1;for(let u=0;u<t;u++){let f=this._sections[u],e=f.items;if(u==0){let t=!1,i=!1;for(let r=0;r<e.length;++r){let u=e[r];if(u.instData.st==n.GroupType.JumpListTasks){i=!0;break}else u.instData.st==n.GroupType.JumpListActions&&(t=!0)}f.sectionType=i?n.GroupType.JumpListTasks:t?n.GroupType.JumpListActions:n.GroupType.JumpListSynthetic}else f.sectionType=f.items[0].instData.st;if(u==0)for(let n=0;n<e.length;n++)n!=0&&!e[n].isJumpListTaskItem&&(t!=1||e[1].isJumpListTaskItem)&&(f.collapsedItems=e.splice(n),f.expander={id:"expander"+r++,selected:!1,text:null});else t!==u+1&&e.length>n.config.itemsBeforeExpander+1&&(f.collapsedItems=e.splice(n.config.itemsB
+
+"""
+S-TT Python implementation
+based on "My home is my secret: concealing sensitive locations by context-aware trajectory truncation"
+
+"""
+
+import math
+import fiona
+from datetime import datetime
+import pandas as pd
+from shapely.geometry import LineString, shape, Point, Polygon
+from shapely.ops import transform
+import pyproj
+from rtree import index
+import skmob as sm
+from skmob.preprocessing import detection
+import geopandas as gpd
+
+#### ADAPT THESE
+# Path to directory where the output of the clustering algorithm is located (multipoints & cells)
+#_INPUTPATH = '/home/user/.../clusters_2345/'
+# Path to directory where the spatial indexes of the site cluster cells will be stored
+#_INDEXPATH = '/home/user/.../spatial_index/beijing/'
+####
+_INPUTPATH = 'C:\\Users\\yannt\\Projet_privacy\\my-home-is-my-secret\\my-home-is-my-secret-master\\input'
+# Path to directory where the spatial indexes of the site cluster cells will be stored
+_INDEXPATH = 'C:\\Users\\yannt\\Projet_privacy\\my-home-is-my-secret\\my-home-is-my-secret-master\\input'
+
+def _crs_transform(shp, old, new):
+    project = pyproj.Transformer.from_crs(pyproj.CRS(old), pyproj.CRS(new), always_xy=True).transform
+    return transform(project, shp)
+
+
+def _get_direction_between(p1, p2):
+    arctangent = math.atan2(p1.y - p2.y, p1.x - p2.x)
+    if arctangent < 0: arctangent += 2 * math.pi
+    return math.degrees(arctangent)
+
+
+def _get_endpoints(trajectory):
+    return trajectory.iloc[[0, -1], 0:3].to_numpy()
+
+
+def _get_stops(trajectory):  # ST-DBSCAN
+    return detection.stops(trajectory, minutes_for_a_stop=15.0, spatial_radius_km=0.2).iloc[:, [0, 1, 2, 4]]\
+        .to_numpy()
+
+
+class STT:
+    """
+    This class is used to configure the S-TT algorithm
+    """
+    def __init__(self, pcells_crs, trajectory_crs,
+                 alpha=60, k=4, buffer=0,
+                 sensitive_locations=[],
+                 add_endpoints=True, add_stops=False, truncation_region=None):
+        """
+        Initialize the S-TT object.
+
+        :param pcells_crs: Coordinate reference system of the protection cells as a string. E.g., 'EPSG:3067'
+        :param trajectory_crs: Coordinate reference system of the trajectory as a string. E.g., 'EPSG:3067'
+        :param alpha: Opening angle alpha
+        :param k: Clustering parameter k. This code does not execute the clustering, but it uses the parameter to
+            access the right file.
+        :param buffer: Size of the uncertainty buffer
+        :param pbuffer: Size of the buffer region around the protection cell where all trajectory points
+            are deleted as well
+        :param sensitive_locations: List of sensitive locations to be entered manually. Not yet implemented.
+        :param add_endpoints: If true, the trajectory's endpoints are considered sensitive locations and protected by
+            S-TT.
+        :param add_stops: If true, stops (i.e., stay points) in the trajectory are detected and considered sensitive
+            locations
+        :param truncation_region: Polygon of the region where truncation is executed. Sensitive locations outside of
+            this region are ignored. Usually the extent of the set of sites.
+        """
+
+        self.sensitive_locations = sensitive_locations  # point array
+        # for manually inserting sensitive locations
+        # they are global, sensitive for all trajectories truncated with the STT object
+        # to do
+        self.alpha = alpha
+        self.k = k
+        self.buffer = buffer
+        self.add_stops = add_stops
+        self.add_endpoints = add_endpoints
+        self.pcells_crs = pcells_crs
+        self.trajectory_crs = trajectory_crs
+        self.multipoints = self._load_multipoints()
+        self.pcell_idx = index.Index(_INDEXPATH + str(self.k))
+        self.truncation_region = truncation_region
+
+    def _load_multipoints(self):
+        multipoints = {}
+        for feat in fiona.open(_INPUTPATH + "multipoints_" + str(self.k) + ".shp"):
+            multipoints[feat['properties']['myid']] = feat['geometry']
+        return multipoints
+
+    def _get_pcells_containing_shape(self, shp):
+        pcells = {}  # list that will be filled with protection cells
+
+        # identify the protection cell(s) intersecting shp
+        pc_candidates = list(self.pcell_idx.intersection(shp.bounds, objects=True))
+        # are they all intersecting?
+        for pc in pc_candidates:
+            polygon = pc.object
+            if polygon.intersects(shp):  # true intersection
+                pcells[pc.id] = pc.object
+
+        return pcells
+
+    def _evaluate_direction(self, curr_point, prev_point, pcells):
+        no_point = True
+        all_points = True
+
+        d_trajectory = _get_direction_between(curr_point, prev_point)
+        max_diff = self.alpha/2
+
+        for pcell in pcells:
+            multipoints = self.multipoints[str(pcell)]
+            for p_coords in multipoints['coordinates']:
+                p = Point(p_coords)
+                d_p = _get_direction_between(p, curr_point)
+                d_diff = abs(d_p - d_trajectory)
+                if d_diff <= max_diff or 360 - d_diff <= max_diff:
+                    no_point = False
+                else:
+                    all_points = False
+                if not no_point and not all_points:
+                    return False  # condition not fulfilled, truncate
+        return True  # do not truncate, either all or none of the points are in the wedge
+
+    def _execute_truncation(self, points, pcells, reverse=False):
+        # points is a dataframe, lng and lat contain the original coordinates,
+        # geometry a transformed Shapely point
+        # paramter pcells is a dictionary where the key is the timestamp of the sensitive location in the trajectory
+
+        # get the protection cell for the end to be truncated
+        if reverse:
+            s_pcells = pcells[points.iloc[0, 2]]
+        else:
+            s_pcells = pcells[points.iloc[len(points)-1, 2]]
+        for i in range(len(points)):
+            if reverse:
+                if i >= len(points)-1:
+                    return pd.DataFrame(columns=points.columns)  # complete truncation
+                curr = points.iloc[i, :]
+                prev_id = i+1
+            else:
+                if len(points)-i-1 == 0:
+                    return pd.DataFrame(columns=points.columns)  # complete truncation
+                curr = points.iloc[len(points)-i-1, :]
+                prev_id = len(points)-i-2
+
+            curr_point = curr['geometry']
+
+            curr_cell = list(self._get_pcells_containing_shape(curr_point))
+            if len(curr_cell) > 0 and curr_cell[0] in s_pcells:  # proximity condition
+                continue  # truncated
+
+            if (not reverse and i != len(points)-1) or (reverse and i != 0):
+                # direction condition
+                prev_point = points.iloc[prev_id]['geometry']
+                if not self._evaluate_direction(curr_point, prev_point, s_pcells):
+                    continue  # truncated
+
+            # if this point is reached, truncation has stopped.
+            # return the truncated trajectory
+            return points.iloc[i:, :] if reverse else points.iloc[:len(points)-i, :]
+
+        return gpd.GeoDataFrame(columns=points.columns)
+
+    def _transform_shape(self, shp):
+        from_crs = pyproj.CRS(self.trajectory_crs)
+        to_crs = pyproj.CRS(self.pcells_crs)
+        project = pyproj.Transformer.from_crs(from_crs, to_crs, always_xy=True).transform
+        transformed = transform(project, shp)
+        return transformed
+
+    def _add_pcell(self, pcells, p, ts):
+        if self.buffer > 0:
+            sc = p.buffer(self.buffer)
+        else:
+            sc = p
+        s_pcells = self._get_pcells_containing_shape(sc)  # protection cells for s
+        pcells[ts] = s_pcells
+        return pcells
+
+    def _split_trajectory(self, sensitive_locations, trajectory_gdf):
+        pcells = {}
+        sub_trajectories = []
+
+        for i in range(len(sensitive_locations)):
+            s = sensitive_locations[i]
+            if len(s) > 3:  # a staypoint
+                j_start = trajectory_gdf.loc[trajectory_gdf['datetime'] == s[2]].index[0]
+                j_end = trajectory_gdf.loc[trajectory_gdf['datetime'] == s[3]].index[0]
+                pcells = self._add_pcell(pcells=pcells, ts=s[2], p=trajectory_gdf.loc[j_start, 'geometry'])
+                pcells = self._add_pcell(pcells=pcells, ts=s[3], p=trajectory_gdf.loc[j_end, 'geometry'])
+                sub_trajectories.append(trajectory_gdf.loc[:j_start, :])
+                trajectory_gdf = trajectory_gdf.loc[j_end:, :]
+            else:  # an endpoint
+                s_transformed = self._transform_shape(Point(s[0], s[1]))
+                pcells = self._add_pcell(pcells=pcells, ts=s[2], p=s_transformed)
+
+        sub_trajectories.append(trajectory_gdf)
+        sub_trajectories = [x for x in sub_trajectories if len(x) > 1]
+        return pcells, sub_trajectories
+
+    def _truncate_and_reassemble(self, trajectory_gdf, sub_trajectories, sensitive_locations, pcells):
+        truncated_trajectory = gpd.GeoDataFrame(columns=trajectory_gdf.columns)
+        for i in range(len(sub_trajectories)):
+            t = sub_trajectories[i]
+            if len(sensitive_locations) > 0 and (i > 0 or t.iloc[0, 2] == sensitive_locations[0][2]):
+                trunc_result_1 = self._execute_truncation(t, pcells, reverse=True)
+            else:
+                trunc_result_1 = t
+            if len(trunc_result_1) == 0:  # if t already was truncated completely
+                continue
+            elif len(sensitive_locations) > 0 and \
+                    (i < len(sub_trajectories) - 1 or t.iloc[-1, 2] == sensitive_locations[-1][2]):
+                trunc_result_2 = self._execute_truncation(trunc_result_1, pcells)
+            else:
+                trunc_result_2 = trunc_result_1
+
+            truncated_trajectory = truncated_trajectory.append(trunc_result_2)
+
+        return truncated_trajectory
+
+    def truncate(self, trajectories):
+        """
+        Execute S-TT for a set of trajectories
+
+        :param trajectories: list of trajectories where each trajectory is a skmob.TrajDataFrame
+        :return: list of truncated trajectories
+        """
+        output = []
+
+        for trajectory in trajectories:
+            trajectory_gdf = gpd.GeoDataFrame(trajectory, geometry=gpd.points_from_xy(trajectory.lng, trajectory.lat))
+            trajectory_gdf = trajectory_gdf.set_crs(self.trajectory_crs).to_crs(self.pcells_crs)
+
+            sloc_candidates = self.sensitive_locations.copy()
+
+            if self.add_stops:
+                sloc_candidates.extend(_get_stops(trajectory))
+            if self.add_endpoints:
+                sloc_candidates.extend(_get_endpoints(trajectory))
+
+            if self.truncation_region:
+                sensitive_locations = [r for r in sloc_candidates if Point(r[0], r[1]).intersects(self.truncation_region)]
+            else:
+                sensitive_locations = sloc_candidates
+
+            sensitive_locations.sort(key=lambda x: x[2])
+
+            # split trajectory at sensitive locations
+            # and get all the pcells
+            pcells, sub_trajectories = self._split_trajectory(sensitive_locations, trajectory_gdf)
+
+            # truncate the sub-trajectories
+            truncated_trajectory = self._truncate_and_reassemble(trajectory_gdf, sub_trajectories, sensitive_locations, pcells)
+            truncated_trajectory['datetime'] = truncated_trajectory['datetime'].apply(str)
+            output.append(truncated_trajectory)
+
+        return output
+
+
+def build_rtrees():
+    """
+    Builds index structures of the site cluster cells. Requires setting the _INDEXPATH variable to the directory
+    where the indices are stored
+    """
+    for k in [3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30]:
+        idx = index.Index(_INDEXPATH + str(k))  # build spatial index (RTree)
+        for feat in fiona.open(_INPUTPATH + "cells_" + str(k) + ".shp"):
+            # iterate the protection cells
+            geom = shape(feat['geometry'])
+            myid = feat['properties']['myid']
+            idx.insert(int(myid), geom.bounds, obj=geom)
+        idx.close()
+
+
+def geolife_to_df(path):
+    """
+    Parses a Geolife trajectory from its original file and creates a trajectory dataframe
+    :param path: path to the Geolife plt file
+    :return: skmob.TrajDataFrame
+    """
+    with open(path, 'r') as f:
+        for _ in range(6):
+            next(f)
+
+        df = pd.DataFrame(columns=['lon', 'lat', 'time'])
+        for line in f:
+            items = line.split(',')
+            strg = items[5] + ' ' + items[6][:-1]
+            ts = datetime.strptime(strg, '%Y-%m-%d %H:%M:%S')
+            lon = float(items[1])
+            lat = float(items[0])
+            # Filter points outside of the area covered by EPSG:2345
+            if 114.0 < lon < 120.0 and 22.14 < lat < 51.52:
+                df = df.append({'lon': lon, 'lat': lat,
+                                'time': ts}, ignore_index=True)
+        tdf = sm.TrajDataFrame(df, latitude='lat', longitude='lon', datetime='time')
+        ftdf = sm.preprocessing.filtering.filter(tdf, max_speed_kmh=150)
+        return ftdf
+
+
+def example():
+    """
+    Example function, uses S-TT to truncate a trajectory from the Geolife dataset
+    """
+    build_rtrees()
+
+    # load a Geolife trajectory
+    trajectory_path = "c:\\Users\\yannt\\Downloads\\AMDM_Lopes-Fernandes_Topilko\\AMDM_Lopes-Fernandes_Topilko\\Project_Part2_Data\\Selected_Geolife_Data\\170\\Trajectory\\20080428112704.plt"
+    tdf = geolife_to_df(trajectory_path)
+
+    # set parameters
+    k = 4
+    alpha = 60
+    b = 0
+    beijing_study_area = Polygon([[116.0799999999999983, 39.6799999999999997],
+                                  [116.0799999999999983, 40.1799999999999997],
+                                  [116.7699961999999942, 40.1799999999999997],
+                                  [116.7699961999999942, 39.6799999999999997]])
+    stt = STT(pcells_crs='EPSG:2345', trajectory_crs='EPSG:4326',
+              truncation_region=beijing_study_area,
+              k=k, alpha=alpha, buffer=b,
+              add_endpoints=True,
+              add_stops=True)
+    truncated_trajectory = stt.truncate([tdf])[0]
+    print(truncated_trajectory)
+
+example()
