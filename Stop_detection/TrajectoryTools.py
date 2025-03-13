@@ -1,1 +1,384 @@
-var WSB;(function(n){var t;(function(t){var i;(function(i){function l(){var n;if((n=e())!==null&&n!==void 0)return n.isDarkMode}function a(){var n;return((n=e())===null||n===void 0?void 0:n.errorBoundaryResetKey)||0}function r(){const{mainPageState:n}=o();return n.mainPageData}function v(){const{mainPageState:n}=o();return n.mainPageLayout}function y(){var n;if((n=r())!==null&&n!==void 0)return n.dynamicAnswer}function h(n){var t;const i=(t=r())===null||t===void 0?void 0:t.feedAnswers;return i?React.useMemo(()=>i.filter(t=>t.answerPlacement==n),[i,n]):[]}function s(){return h("Default")}function p(){return h("Hero")}function w(){var n;if((n=r())!==null&&n!==void 0)return n.learningAnswer}function b(){var n;if((n=r())!==null&&n!==void 0)return n.popularSearchesAnswer}function k(){const n=s();return n.find(n=>n.answerPlacement=="Hero")}function d(){var n;if((n=r())!==null&&n!==void 0)return n.acronymsAnswer}function g(){var n;if((n=r())!==null&&n!==void 0)return n.dynamicAnswerState}function nt(){var n;if((n=r())!==null&&n!==void 0)return n.eduAssignmentAnswer}function tt(){var n;if((n=r())!==null&&n!==void 0)return n.eduClassAnswer}function it(n){var t,i,r;switch(n){case"MyOrgChart":return(t=e())===null||t===void 0?void 0:t.isMyOrgChartExpanded;case"EduClasses":return(i=e())===null||i===void 0?void 0:i.isEduClassesExpanded;case"EduAssignments":return(r=e())===null||r===void 0?void 0:r.isEduAssignmentsExpanded}}function c(){var n,i;return(i=(n=e())===null||n===void 0?void 0:n.blendMode)!==null&&i!==void 0?i:t.DEFAULT_BLEND_MODE}function rt(){var n;if((n=r())!==null&&n!==void 0)return n.eduCardAnswer}function ut(){var n;if((n=r())!==null&&n!==void 0)return n.recommendedPeopleAnswer}function ft(){var n;if((n=r())!==null&&n!==void 0)return n.myOrgChart}function et(){var n;if((n=oi())!==null&&n!==void 0)return n.recommendedPeoplePaginationSetting}function ot(){return n.msbDsbHost.isConsumerContentEnabled()}function st(){const n=u();return React.useCallback((i,r)=>n(t.DataContext.setWsbRequeryAction(i,r)),[])}function ht(n){const i=u();return React.useCallback(r=>{switch(n){case"MyOrgChart":i(t.DataContext.setMyOrgChartExpansionAction(r));break;case"EduClasses":i(t.DataContext.setEduClassesExpansionAction(r));break;case"EduAssignments":i(t.DataContext.setEduAssignmentsExpansionAction(r))}},[])}function ct(){const n=u();return React.useCallback((i,r,u)=>{n(t.DataContext.dismissAnswerAction(i,r,u))},[])}function lt(){const n=u();return React.useCallback((i,r)=>{n(t.DataContext.hideAnswerAction(i,r))},[])}function at(){const n=u();return React.useCallback(i=>{n(t.DataContext.launchUriAction(i))},[])}function vt(){const n=u();return React.useCallback(i=>{n(t.DataContext.launchProactiveWorkSearch(i))},[])}function yt(){const n=u();return React.useCallback(()=>{n(t.DataContext.forceDSBRefreshAction())},[])}function pt(){const n=u();return React.useCallback((i,r)=>{n(t.DataContext.navigatePageAction(i,r))},[])}function wt(){const n=u();return React.useCallback(i=>{n(t.DataContext.setLastSelectedScopeAction(i))},[])}function bt(){const{state:{imageOfTheDay:i},dispatch:r}=f(),n=i.imageOfTheDay;return React.useEffect(()=>{n===undefined&&r(t.DataContext.fetchImageOfTheDayAction())},[n]),n}function kt(n){const{state:{personPhotos:r},dispatch:u}=f();if(!n)return null;const i=r[n];return React.useEffect(()=>{i===undefined&&u(t.DataContext.fetchPersonPhotoAction(n))},[i]),(i===null||i===void 0?void 0:i.imageInBase64)||null}function dt(){const{state:{m365AppsState:i},dispatch:r}=f(),n=i.appStateList;return React.useEffect(()=>{n===undefined&&r(t.DataContext.fetchM365AppStateAction())},[n]),n||null}function gt(n){const{state:{groupPhotos:r},dispatch:u}=f();if(!n)return null;const i=r[n];return React.useEffect(()=>{i===undefined&&u(t.DataContext.fetchGroupPhotoAction(n))},[i]),i===null||i===void 0?void 0:i.imageInBase64}function ni(n,i="Medium"){const{itemId:u}=n;if(!u)return null;const{state:{feedItemPreviews:e},dispatch:o}=f(),r=e[u];return React.useEffect(()=>{r===undefined&&o(t.DataContext.fetchFeedItemPreviewAction(n,i))},[r]),(r===null||r===void 0?void 0:r.imageInBase64)||null}function ti(n){const{state:{fileIcons:r},dispatch:u}=f();if(!n)return t.DEFAULT_FILE_ICON;const i=r[n];return React.useEffect(()=>{i===undefined&&u(t.DataContext.fetchFileIconAction(n))},[i]),i||t.DEFAULT_FILE_ICON}function ii(n){const{state:{fluentIconSvgHtmls:r},dispatch:u}=f();if(!n)return null;const i=r[n];return React.useEffect(()=>{i===undefined&&u(t.DataContext.fetchFluentIconSvgHtmlAction(n))},[i]),i}function ri(){const{chatUpsellState:n}=o();return n}function ui(){const t=c()==="Blended";return n.config.msbDsbHidePeopleSearchBox||t}function fi(){const t=n.msbDsbHost.getLocString("CompanyNamePlaceholder");return n.msbHost.getTenantName()||t}function ei(){const t=s();return n.msbDsbHost.isWideLayoutEnabled()&&t.length>0}function e(){const{uiOptions:n}=o();return n}function oi(){const{paginationSettings:n}=o();return n}function o(){const{state:n}=f();return n}function u(){const{dispatch:n}=f();return n}function f(){return React.useContext(t.DataContext.ViewDataContext)}i.useIsDarkMode=l;i.useErrorBoundaryResetKey=a;i.useMainPageData=r;i.useMainPageLayout=v;i.useDynamicAnswer=y;i.useFeedAnswers=s;i.useHeroAnswers=p;i.useLearningAnswer=w;i.usePopularSearchesAnswer=b;i.useHeroAnswer=k;i.useAcronymsAnswer=d;i.useDynamicAnswerState=g;i.useEduAssignmentAnswer=nt;i.useEduClassAnswer=tt;i.useIsElementExpanded=it;i.useBlendMode=c;i.useEduCardAnswer=rt;i.useRecommendedPeopleAnswer=ut;i.useOrgChartAnswer=ft;i.useRecommendedPeoplePaginationSetting=et;i.useIsConsumerContentEnabled=ot;i.useDispatchSetWsbRequeryAction=st;i.useDispatchSetElementExpansionAction=ht;i.useDispatchDismissAnswerAction=ct;i.useDispatchHideAnswerAction=lt;i.useDispatchLaunchUriAction=at;i.useDispatchLaunchProactiveWorkSearchAction=vt;i.useDispatchForceDsbRefreshAction=yt;i.useDispatchNavigatePageAction=pt;i.useDispatchSetLastSelectedScopeAction=wt;i.useImageOfTheDay=bt;i.usePersonPhotoBase64=kt;i.useM365AppStateList=dt;i.useGroupPhotoBase64=gt;i.useFeedItemPreviewBase64=ni;i.useFileIcon=ti;i.useFluentIconSvgHtml=ii;i.useChatUpsell=ri;i.useShouldHideSearchBox=ui;i.useTenantDisplayName=fi;i.useShouldShowWideLayout=ei})(i=t.Components||(t.Components={}))})(t=n.MsbDsb||(n.MsbDsb={}))})(WSB||(WSB={})),function(n){var t;(function(t){var i;(function(i){i.MainPageTemplate=()=>React.createElement(i.MsbDsbErrorBoundary,{fallback:React.createElement(h,null),fallbackInstrumentSectionName:"MainPageErrorBoundaryFallback",wrappedComponentName:"MainPageTemplateWrapper"},React.createElement(f,null));const f=()=>{const t=i.useMainPageData();if(!t)return null;const r=!n.msbDsbHost.isWideLayoutEnabled(),u=!!n.msbHost.isEduTenant();return u?React.createElement(i.EduMainPageTemplateImpl,null):r?React.createElement(o,null):React.createElement(e,null)},e=()=>{t.checkTestHookParamsAndThrowError===null||t.checkTestHookParamsAndThrowError===void 0?void 0:t.checkTestHookParamsAndThrowError("MainPage");const f=i.useMainPageData(),r=i.useDynamicAnswerState(),u=i.useShouldShowWideLayout();React.useEffect(()=>{n.msbDsbHost.updateInteractionModel()},[f]);n.msbDsbHost.setWideModeStyle(!!u);const e=r===null||r===void 0?void 0:r.isAnswerStatusSucceeded;return React.createElement("div",{className:"msbdsb-mp","data-id":t.MAINPAGE_CONTAINER_ID},React.createElement(i.HeaderSection,null),React.createElement("div",{className:"msbdsb-mp-content",id:t.MAINPAGE_CONTAINER_SCROLL},u&&React.createElement(c,null),!u&&(e?React.createElement(l,null):React.createElement(a,null))))},o=()=>{t.checkTestHookParamsAndThrowError===null||t.checkTestHookParamsAndThrowError===void 0?void 0:t.checkTestHookParamsAndThrowError("MainPage");const u=i.useMainPageData(),r=i.useMainPageLayout();if(r.length==0)throw new Error("Empty main page layout");return React.useEffect(()=>{n.msbDsbHost.updateInteractionModel()},[u]),React.createElement("div",{className:"msbdsb-mp","data-id":t.MAINPAGE_CONTAINER_ID},React.createElement(i.HeaderSection,null),React.createElement("div",{className:"msbdsb-mp-content",id:t.MAINPAGE_CONTAINER_SCROLL},r.map(n=>React.createElement(s,{component:n,key:n}))))},s=({component:t})=>{switch(t){case"SearchBox":return i.useShouldHideSearchBox()?null:React.createElement(i.WorkSearchBox,{isIndependent:!0});case"ScopeSwitch":return React.createElement(i.ScopeEntrySection,null);case"M365AppList":return React.createElement(i.M365AppList,null);case"Feed":return React.createElement(i.MicrosoftFeedCard,null);case"FileHero":return React.createElement(i.HeroSection,null);case"RecommendedPeople":return React.createElement(i.RecommendedPeopleSection,null);case"OrgChart":return React.createElement(i.OrgChart,{isIndependent:!0});case"Dynamic":return React.createElement(i.DynamicAnswerCard,null);case"SearchSuggestions":return React.createElement(u,null);case"PopularSearch":return React.createElement(i.PopularTenantSearchesCard,null);case"Acronyms":return React.createElement(i.AcronymsCard,null);case"WorkChatCard":return React.createElement(i.WorkChatCard,{chatEligibility:n.msbHost.getChatEligibility()});default:return null}},h=()=>React.createElement("div",{className:"msbdsb_mainpage_fallback_boundary msbdsb-mp-content"},React.createElement(i.MsbDsbErrorBoundaryDefaultFallback,null)),c=()=>React.createElement(React.Fragment,null,React.createElement("div",{className:"left-col"},React.createElement(i.DynamicAnswerCard,null),React.createElement(i.MicrosoftFeedCard,null)),React.createElement(r,{isOnDsbTop:!1})),l=()=>{const n=i.useDynamicAnswerState();return React.createElement(React.Fragment,null,React.createElement(i.DynamicAnswerCard,null),!(n===null||n===void 0?void 0:n.isAnswerM365Content)&&React.createElement(i.MicrosoftFeedCard,null),React.createElement(r,{isOnDsbTop:!1}))},a=()=>React.createElement(React.Fragment,null,React.createElement(r,{isOnDsbTop:!0}),React.createElement(i.MicrosoftFeedCard,null)),r=({isOnDsbTop:t})=>{const e=i.useShouldShowWideLayout(),o=e?"right-col":"msbdsb_card_background",s=i.useHeroAnswers(),r=n.config.msbDsbFileHero&&s.length>0&&!e&&t,f=i.useShouldHideSearchBox();return React.createElement("div",{className:o},r?React.createElement("div",null,f?null:React.createElement(i.WorkSearchBox,{isIndependent:!0}),React.createElement(i.HeroSection,null)):undefined,n.msbDsbHost.isPeopleExplanationEnabled()?React.createElement(i.SplitPeopleSection,{hidePeopleSearchBox:r||f}):React.createElement(i.PeopleCard,{hideSearchBox:r||f}),React.createElement(u,null))},u=()=>{var t;const r=i.useShouldShowWideLayout(),u=!r,f=r;return React.createElement(React.Fragment,null,((t=n.msbHost.msbWorkChatUtils)===null||t===void 0?void 0:t.validChatEligibilityStateForCard())&&React.createElement(i.WorkChatCard,{chatEligibility:n.msbHost.getChatEligibility()}),u?React.createElement(i.AcronymsCard,null):undefined,f?React.createElement(i.PopularTenantSearchesCard,null):undefined)}})(i=t.Components||(t.Components={}))})(t=n.MsbDsb||(n.MsbDsb={}))}(WSB||(WSB={})),function(n){var t;(function(t){var i;(function(i){const e=6,o=4,s="https://www.bing.com/th?id=ODSWG.b012cfe4-e2fc-482a-a28e-2efadac0fdf3",h="https://www.bing.com/th?id=ODSWG.7336a8ee-7373-4f81-8d7e-5b15cf0d4146";i.PeopleCard=({hideSearchBox:t})=>{const r=i.useTenantDisplayName(),u=n.msbDsbHost.getLocString("PeopleCardTitle",r),f=i.useRecommendedPeopleAnswer(),e=i.useOrgChartAnswer();return React.createElement("div",{className:"msbdsb-mp-ppl","data-region":"PeopleSection",role:"group","aria-label":u},!t&&React.createElement(i.WorkSearchBox,null),(f||e)&&React.createElement("div",{className:"msbdsb_people_box_content"},React.createElement(i.RecommendedPeople,null),React.createElement(i.OrgChart,null)))};i.SplitPeopleSection=({hidePeopleSearchBox:n})=>{const t=i.useRecommendedPeopleAnswer();return React.createElement(React.Fragment,null,!n&&React.createElement(i.WorkSearchBox,{isIndependent:!0}),t&&React.createElement(i.RecommendedPeopleSection,null),React.createElement(i.OrgChart,{isIndependent:!0}))};i.WorkSearchBox=({isIndependent:n})=>React.createElement(i.MsbDsbErrorBoundary,{wrappedComponentName:"WorkSearchBox"},React.createElement(c,{isIndependent:n}));const c=({isIndependent:r})=>{t.checkTestHookParamsAndThrowError===null||t.checkTestHookParamsAndThrowError===void 0?void 0:t.checkTestHookParamsAndThrowError("WorkSearchBox");const{searchBoxInstrumentedItem:f}=i.useMainPageData(),e=i.useDispatchSetWsbRequeryAction(),o=t=>{var i;if((i=t.target)===null||i===void 0?void 0:i.value){const i=n.msbHost.features.isWorkScopeDsbRedirectEnabled()?n.Scope.Work:n.Scope.People;e(t.target.value,i);t.target.value=""}},s=i.useTenantDisplayName(),u=n.msbHost.features.isWorkScopeDsbRedirectEnabled()?n.msbDsbHost.getLocString("WorkSearchPlaceholder"):n.msbDsbHost.getLocString("PeopleSearchPlaceholder",s);return React.createElement(i.WithInstrumentation,{instrumentedItem:f},React.createElement("div",{className:`msb_dsb_people_search ${!!r&&"msb_dsb_independent_searchbox"}`},React.createElement("input",{id:"msbdsb_people_search_box",tabIndex:t.TAB_NAVIGATION_TAB_INDEX,className:"msb_dsb_search_box",type:"text","aria-l
+import csv
+import os
+import shutil
+import socket
+import sys
+
+#import matplotlib.pyplot as plt
+import numpy as np
+from keras import backend as K
+
+np.random.seed(0)
+from keras.models import Model
+from keras.layers import Dense, Input, Dropout, LSTM, Activation, Bidirectional, Concatenate, Flatten, regularizers
+from keras.layers.embeddings import Embedding
+
+csv.field_size_limit(sys.maxsize)
+np.random.seed(1)
+import smtplib
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+
+def send_email_report(subject, txt):
+    fromaddr = "rreporter33@gmail.com"
+    toaddr = "etemad@dal.ca"
+    msg = MIMEMultipart()
+    msg['From'] = fromaddr
+    msg['To'] = toaddr
+    msg['Subject'] = subject
+
+    body = txt
+    msg.attach(MIMEText(body, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(fromaddr, "A@12345678")
+    text = msg.as_string()
+    server.sendmail(fromaddr, toaddr, text)
+    server.quit()
+
+
+def work_folder():
+    pid = os.getpid()
+    hostname = socket.gethostname()
+    directory = hostname + '_' + str(pid)
+    ex_traj = directory + '/ex_traj'
+    send_email_report(subject="Start Experiment",
+                      txt="Start experiment on " + hostname + " Process id:" + str(pid) + " directory:" + directory)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    if not os.path.exists(ex_traj):
+        os.makedirs(ex_traj)
+    return directory
+
+
+def start_experiment():
+    savefolder = work_folder()
+    print('saving in : ' + savefolder)
+    dir_src = os.getcwd()
+    dir_dst = os.getcwd() + '/' + savefolder
+    for filename in os.listdir(dir_src):
+        if filename.endswith('.py'):
+            shutil.copy(dir_src + '/' + filename, dir_dst)
+            print(filename)
+    return dir_dst, dir_src
+
+
+def end_experiment(dir_dst, dir_src, backup_extentions=['.png', '.npy', '.h5', '.json', '.out', '.txt', '.csv'],txt=""):
+    for ex in backup_extentions:
+        for filename in os.listdir(dir_src):
+            if filename.endswith(ex):
+                shutil.copy(dir_src + '/' + filename, dir_dst)
+                print(filename)
+    send_email_report(subject="Finish Experiment",
+                      txt="Finish experiment on " + dir_src + " saved in  directory:" + dir_dst+" Important result is:"+txt)
+
+
+def f1(y_true, y_pred):
+    def recall(y_true, y_pred):
+        # Recall metric.
+        true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+        possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+        recall = true_positives / (possible_positives + K.epsilon())
+        return recall
+
+    def precision(y_true, y_pred):
+        # Precision metric.
+        true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+        predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+        precision = true_positives / (predicted_positives + K.epsilon())
+        return precision
+
+    precision = precision(y_true, y_pred)
+    recall = recall(y_true, y_pred)
+    return 2 * ((precision * recall) / (precision + recall))
+
+def plot_results(history,txt):
+    print(history.history.keys())
+    plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
+    plt.title('model accuracy '+txt)
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig('accuracy.png')
+    #plt.show()
+    # summarize history for loss
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('model loss '+txt)
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig('loss.png')
+    #plt.show()
+
+
+#       plt.show()
+
+def pre_trained_embedding_layer(word_to_vec_map, word_to_index):
+    vocab_len = len(word_to_index) + 1
+    emb_dim = word_to_vec_map["@"].shape[0]
+    emb_matrix = np.zeros((vocab_len, emb_dim))
+    for word, index in word_to_index.items():
+        emb_matrix[index, :] = word_to_vec_map[word]
+    embedding_layer = Embedding(vocab_len, emb_dim)
+    embedding_layer.build((None,))
+    embedding_layer.set_weights([emb_matrix])
+    return embedding_layer
+
+
+def sentences_to_indices(X, word_to_index, max_len):
+    m = X.shape[0]
+    X_indices = np.zeros((m, max_len))
+    for i in range(m):
+        sentence_words = X[i].lower().split()
+        j = 0
+        for w in sentence_words:
+            # print(i,j,w)
+            X_indices[i, j] = word_to_index[w]
+            j += 1
+    return X_indices
+
+
+def read_glove_vectors(glove_file):
+    with open(glove_file, 'r') as f:
+        words = set()
+        word_to_vec_map = {}
+        for line in f:
+            line = line.strip().split()
+            curr_word = line[0]
+            words.add(curr_word)
+            word_to_vec_map[curr_word] = np.array(line[1:], dtype=np.float64)
+
+        i = 1
+        words_to_index = {}
+        index_to_words = {}
+        for w in sorted(words):
+            words_to_index[w] = i
+            index_to_words[i] = w
+            i = i + 1
+    return words_to_index, index_to_words, word_to_vec_map
+def tr_net_b2(input_shape_speed, word_to_vec_map_speed, word_to_index_speed, input_shape_bearing, word_to_vec_map_bearing, word_to_index_bearing, no_classes=11):
+
+    speed = Input(shape=input_shape_speed, dtype=np.int32)
+    embedding_layer = pre_trained_embedding_layer(word_to_vec_map_speed, word_to_index_speed)
+    embeddings = embedding_layer(speed)
+    X = Bidirectional(LSTM(128, return_sequences=True))(embeddings)
+    X = Dropout(0.5)(X)
+    X = Bidirectional(LSTM(128))(X)
+    X = Dropout(0.5)(X)
+    X = Dense(32)(X)
+    X = Dropout(0.5)(X)
+    X = Dense(16)(X)
+
+    bearing = Input(shape=input_shape_bearing, dtype=np.int32)
+    embedding_layer_bearing = pre_trained_embedding_layer(word_to_vec_map_bearing, word_to_index_bearing)
+    embeddings_bearing = embedding_layer_bearing(bearing)
+    B = Bidirectional(LSTM(128, return_sequences=True))(embeddings_bearing)
+    B = Dropout(0.5)(B)
+    B = Bidirectional(LSTM(128))(B)
+    B = Dropout(0.5)(B)
+    B = Dense(32)(B)
+    B = Dropout(0.5)(B)
+    B = Dense(16)(B) 
+
+    X=Concatenate()([X,B])
+
+    X = Dense(no_classes)(X)
+    X = Activation('softmax')(X)
+    model = Model(inputs=[speed,bearing],outputs= X)
+    return model
+def tr_net_b3(input_shape_speed, word_to_vec_map_speed, word_to_index_speed, input_shape_bearing, word_to_vec_map_bearing, word_to_index_bearing, no_classes=11):
+
+    speed = Input(shape=input_shape_speed, dtype=np.int32)
+    embedding_layer = pre_trained_embedding_layer(word_to_vec_map_speed, word_to_index_speed)
+    embeddings = embedding_layer(speed)
+    X = Bidirectional(LSTM(128, return_sequences=True))(embeddings)
+    X = Dropout(0.5)(X)
+    X = Bidirectional(LSTM(128))(X)
+    X = Dropout(0.5)(X)
+    X = Dense(32, kernel_regularizer=regularizers.l2(0.001),
+                activity_regularizer=regularizers.l1(0.001))(X)
+    X = Dropout(0.5)(X)
+    X = Dense(16, kernel_regularizer=regularizers.l2(0.001),
+                activity_regularizer=regularizers.l1(0.001))(X)
+
+    bearing = Input(shape=input_shape_bearing, dtype=np.int32)
+    embedding_layer_bearing = pre_trained_embedding_layer(word_to_vec_map_bearing, word_to_index_bearing)
+    embeddings_bearing = embedding_layer_bearing(bearing)
+    B = Bidirectional(LSTM(128, return_sequences=True))(embeddings_bearing)
+    B = Dropout(0.5)(B)
+    B = Bidirectional(LSTM(128))(B)
+    B = Dropout(0.5)(B)
+    B = Dense(32, kernel_regularizer=regularizers.l2(0.001),
+                activity_regularizer=regularizers.l1(0.001))(B)
+    B = Dropout(0.5)(B)
+    B = Dense(16, kernel_regularizer=regularizers.l2(0.001),
+                activity_regularizer=regularizers.l1(0.001))(B) 
+
+    X=Concatenate()([X,B])
+
+    X = Dense(no_classes)(X)
+    X = Activation('softmax')(X)
+    model = Model(inputs=[speed,bearing],outputs= X)
+    return model
+
+
+def tr_net_b(input_shape_speed, word_to_vec_map_speed, word_to_index_speed, input_shape_bearing, word_to_vec_map_bearing, word_to_index_bearing, no_classes=11):
+
+    speed = Input(shape=input_shape_speed, dtype=np.int32)
+    embedding_layer = pre_trained_embedding_layer(word_to_vec_map_speed, word_to_index_speed)
+    embeddings = embedding_layer(speed)
+    X = Bidirectional(LSTM(64, return_sequences=True))(embeddings)
+    X = Dropout(0.5)(X)
+    X = Bidirectional(LSTM(64))(X)
+    X = Dropout(0.5)(X)
+    X = Dense(16)(X)
+    X = Dropout(0.5)(X)
+    X = Dense(16)(X)
+    X = Dropout(0.5)(X)
+    X = Bidirectional(LSTM(64))(X)
+    X = Dropout(0.5)(X)
+    X = Dense(16)(X)
+    X = Dropout(0.5)(X)
+    X = Dense(16)(X)
+    X = Dense(8, kernel_regularizer=regularizers.l2(0.001),     activity_regularizer=regularizers.l1(0.001))(X)
+
+
+    bearing = Input(shape=input_shape_bearing, dtype=np.int32)
+    embedding_layer_bearing = pre_trained_embedding_layer(word_to_vec_map_bearing, word_to_index_bearing)
+    embeddings_bearing = embedding_layer_bearing(bearing)
+    B = Bidirectional(LSTM(64, return_sequences=True))(embeddings_bearing)
+    B = Dropout(0.5)(B)
+    B = Bidirectional(LSTM(64))(B)
+    B = Bidirectional(LSTM(64, return_sequences=True))(embeddings_bearing)
+    B = Dropout(0.5)(B)
+    B = Bidirectional(LSTM(64))(B)
+    B = Dropout(0.5)(B)
+
+    B = Dense(16)(B)
+    B = Dropout(0.25)(B)
+    B = Dense(16)(B)
+
+    X=Concatenate()([X,B])
+
+    X = Dense(no_classes, kernel_regularizer=regularizers.l2(0.01),     activity_regularizer=regularizers.l1(0.01))(X)
+
+    B = Bidirectional(LSTM(512, return_sequences=True))(embeddings_bearing)
+    B = Dropout(0.5)(B)
+    B = Dense(16)(B)
+    B = Dropout(0.5)(B)
+    B = Dense(16)(B) 
+
+    X=Concatenate()([X,B])
+
+    X = Dense(no_classes, kernel_regularizer=regularizers.l2(0.001),     activity_regularizer=regularizers.l1(0.001))(X)
+    X = Activation('softmax')(X)
+    model = Model(inputs=[speed,bearing],outputs= X)
+    return model
+
+def tr_net_r(input_shape, word_to_vec_map, word_to_index, no_classes=11):
+    sentence_indices = Input(shape=input_shape, dtype=np.int32)
+    embedding_layer = pre_trained_embedding_layer(word_to_vec_map, word_to_index)
+    embeddings = embedding_layer(sentence_indices)
+
+    X = Bidirectional(LSTM(128, return_sequences=True))(embeddings)
+
+    X = Dropout(0.5)(X)
+    X = Bidirectional(LSTM(256))(X)
+    X = Dropout(0.5)(X)
+    X = Dense(no_classes, kernel_regularizer=regularizers.l2(0.01),     activity_regularizer=regularizers.l1(0.01))(X)
+    X = Activation('softmax')(X)
+    model = Model(sentence_indices, X)
+    return model
+
+
+
+def tr_net(input_shape, word_to_vec_map, word_to_index, no_classes=11):
+    sentence_indices = Input(shape=input_shape, dtype=np.int32)
+    embedding_layer = pre_trained_embedding_layer(word_to_vec_map, word_to_index)
+    embeddings = embedding_layer(sentence_indices)
+
+    X = Bidirectional(LSTM(512, return_sequences=True))(embeddings)
+
+    X = Dropout(0.5)(X)
+    X = Bidirectional(LSTM(512))(X)
+    X = Dropout(0.5)(X)
+    X = Dense(no_classes)(X)
+    X = Activation('softmax')(X)
+    model = Model(sentence_indices, X)
+    return model
+
+
+def read_csv(filename='train_speed.csv',
+             valid_tran=['airplane', 'boat', 'taxi', 'subway', 'run', 'motorcycle', 'train', 'walk', 'bus', 'bike',
+                         'car'], min_words=0):
+    phrase = []
+    trans_class = []
+    dic = {}
+    dic2 = {}
+    i = 0
+    for x in valid_tran:
+        print(x + " : " + str(i))
+        dic[x] = i
+        dic2[i] = x
+        i = i + 1
+
+    with open(filename) as csvDataFile:
+        csv_reader = csv.reader(csvDataFile, lineterminator='$\n')
+
+        for row in csv_reader:
+            l = len(row[0].split())
+            print(l)
+            if (row[1] in valid_tran) & (l > min_words):
+                phrase.append(row[0])
+                trans_class.append(dic[row[1]])
+
+    X = np.asarray(phrase)
+    Y = np.asarray(trans_class, dtype=int)
+
+    return X, Y, dic, dic2
+
+def read_csv_2(filenames=['train_speed.csv','train_bearing.csv'],
+             valid_tran=['airplane', 'boat', 'taxi', 'subway', 'run', 'motorcycle', 'train', 'walk', 'bus', 'bike',
+                         'car'], min_words=0):
+    phrase = []
+    phrase0 = []
+    phrase1 = []
+    trans_class = []
+    dic = {}
+    dic2 = {}
+    i = 0
+    for x in valid_tran:
+        print(x + " : " + str(i))
+        dic[x] = i
+        dic2[i] = x
+        i = i + 1
+
+    with open(filenames[0]) as csvDataFile0,open(filenames[1]) as csvDataFile1:
+        csv_reader0 = csv.reader(csvDataFile0, lineterminator='$\n')
+        csv_reader1 = csv.reader(csvDataFile1, lineterminator='$\n')
+
+        for row0,row1 in zip(csv_reader0,csv_reader1):
+            l = len(row0[0].split())
+            print(l)
+            if (row0[1] in valid_tran) & (l > min_words):
+                phrase.append([row0[0],row1[0]])
+                phrase0.append(row0[0])
+                phrase1.append(row1[0])
+                trans_class.append(dic[row0[1]])
+
+    X0 = np.asarray(phrase0)
+    X1 = np.asarray(phrase1)
+    X = np.asarray(phrase)
+    Y = np.asarray(trans_class, dtype=int)
+
+    return X, Y, dic, dic2
+
+
+def convert_to_one_hot(Y, C):
+    Y = np.eye(C)[Y.reshape(-1)]
+    return Y

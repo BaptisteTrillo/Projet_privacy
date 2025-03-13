@@ -19,13 +19,11 @@ import geopandas as gpd
 
 #### ADAPT THESE
 # Path to directory where the output of the clustering algorithm is located (multipoints & cells)
-#_INPUTPATH = '/home/user/.../clusters_2345/'
+_INPUTPATH = '/home/user/.../clusters_2345/'
 # Path to directory where the spatial indexes of the site cluster cells will be stored
-#_INDEXPATH = '/home/user/.../spatial_index/beijing/'
+_INDEXPATH = '/home/user/.../spatial_index/beijing/'
 ####
-_INPUTPATH = 'C:\\Users\\yannt\\Projet_privacy\\my-home-is-my-secret\\my-home-is-my-secret-master\\input'
-# Path to directory where the spatial indexes of the site cluster cells will be stored
-_INDEXPATH = 'C:\\Users\\yannt\\Projet_privacy\\my-home-is-my-secret\\my-home-is-my-secret-master\\input'
+
 
 def _crs_transform(shp, old, new):
     project = pyproj.Transformer.from_crs(pyproj.CRS(old), pyproj.CRS(new), always_xy=True).transform
@@ -314,7 +312,7 @@ def example():
     build_rtrees()
 
     # load a Geolife trajectory
-    trajectory_path = "c:\\Users\\yannt\\Downloads\\AMDM_Lopes-Fernandes_Topilko\\AMDM_Lopes-Fernandes_Topilko\\Project_Part2_Data\\Selected_Geolife_Data\\170\\Trajectory\\20080428112704.plt"
+    trajectory_path = "/home/user/example.plt"
     tdf = geolife_to_df(trajectory_path)
 
     # set parameters
@@ -333,4 +331,3 @@ def example():
     truncated_trajectory = stt.truncate([tdf])[0]
     print(truncated_trajectory)
 
-example()
