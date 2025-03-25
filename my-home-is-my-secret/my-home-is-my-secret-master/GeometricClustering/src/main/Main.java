@@ -55,7 +55,7 @@ public class Main {
 
 		// layer 1 - points
 		ListLayer l1 = ListLayer.readFromShapefile(
-				path + File.separator + "input" + File.separator + "centroids-utm.shp", Color.DARK_GRAY);
+				path + File.separator + "input" + File.separator + "centroids_test.shp", Color.DARK_GRAY);
 		myMapFrame.getMap().addLayer(l1, 1);
 
 		ArrayList<Coordinate> cl = new ArrayList<Coordinate>();
